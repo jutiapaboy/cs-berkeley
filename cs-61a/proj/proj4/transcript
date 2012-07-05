@@ -1,0 +1,115 @@
+okay
+STk> (load "obj.scm")
+okay
+STk> (load "logo.scm")
+okay
+STk> (load "logo-meta.scm")
+okay
+STk> (initialize-logo)
+
+? 9+7
+You don't say what to do with 16
+? print 3 * 4 + 5
+17
+? print (2 * 3) + (4 * 6 + 1)
+31
+? print (2 + 3) * (4 + 6 * 2)
+100
+? ()
+*** Error:
+    Unexpected ')'
+Current eval stack:
+__________________
+  0    (apply stk-error args)
+  1    (handle-infix (eval-helper #t) line-obj env)
+  2    (let ((result (handle-infix (eval-helper #t) line-obj env))) (let ((token (ask line-obj (quote next)))) (if (right-paren? token) result (error "Too much inside parens"))))
+  3    (handle-infix (eval-prefix line-obj env) line-obj env)
+  4    (let ((value (logo-eval line-obj env))) (if (not (eq? value (quote =no-value=))) value (eval-line line-obj env)))
+  5    (let ((result (eval-line (make-line-obj line) the-global-environment))) (if (not (eq? result (quote =no-value=))) (logo-print (list "You don't say what to do with" result))))
+  6    (helper)
+STk> (eval-definition (make-line-obj '(adder5 :x)))
+-> -> print :x + 5
+-> end
+adder5 defined
+=no-value=
+STk> (car the-procedures)
+(adder5 compound 1 ((x) () (print :x + 5)) ((" TEST") ()) #f)
+STk> (eval-sequence '((print sum 3 4) (print 5) (stop) (output 1)) the-global-environment #f)
+7
+5
+=no-value
+STk> (eval-sequence '((stop) (print sum 3 4) (print 5) (output 1)) the-global-environment #f)
+=no-value
+STk> (eval-sequence '((print sum 3 4) (output 1) (print 5)) the-global-environment #f)
+7
+1
+STk> (initialize-logo)
+
+? make "x 3
+? print :x
+3
+? to scope :x
+-> helper 5
+-> end
+scope defined
+? to helper :y
+-> print (sentence :x :y)
+-> end
+helper defined
+? scope 4
+4 5
+? to garply
+-> print "hello
+-> print "goodbye
+-> end
+garply defined
+? garply
+hello
+goodbye
+? step "garply
+? garply
+print "hello>>>
+hello
+print "goodbye>>>
+goodbye
+? unstep "garply
+? garply
+hello
+goodbye
+? test "true
+You don't say what to do with true
+? iftrue [print sum 2 3]
+5
+? iffalse [print sum 2 3]
+? ift [print 9 * 7]
+63
+? iff [print 9 * 7]
+? test "false
+You don't say what to do with false
+? iftrue [print sum 2 3]
+? iffalse [print sum 2 3]
+5
+? to count :increase static :counter 2+3
+-> make "counter :counter + :increase
+-> print :counter
+-> end
+count defined
+? count 20
+25
+? count 1
+26
+? ()
+*** Error:
+    Unexpected ')'
+Current eval stack:
+__________________
+  0    (apply stk-error args)
+  1    (handle-infix (eval-helper #t) line-obj env)
+  2    (let ((result (handle-infix (eval-helper #t) line-obj env))) (let ((token (ask line-obj (quote next)))) (if (right-paren? token) result (error "Too much inside parens"))))
+  3    (handle-infix (eval-prefix line-obj env) line-obj env)
+  4    (let ((value (logo-eval line-obj env))) (if (not (eq? value (quote =no-value=))) value (eval-line line-obj env)))
+  5    (let ((result (eval-line (make-line-obj line) the-global-environment))) (if (not (eq? result (quote =no-value=))) (logo-print (list "You don't say what to do with" result))))
+  6    (helper)
+STk> (lookup-procedure 'count)
+(count compound 1 ((increase) (make |"counter| :counter + :increase) (print :counter)) ((counter " TEST") 26 ()) #f)
+STk> (transcript-off)
