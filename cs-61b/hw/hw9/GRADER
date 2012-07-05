@@ -1,0 +1,27 @@
+Name: Annie To
+Login: cs61b-fg
+
+Part II
+
+
+(a) How would your algorithm ensure that there is a path between every
+    pair of cells, but no more than one path between any pair of cells
+    (i.e., no cycles)?
+
+    We create a list of explored cells, and make sure that when
+    we break walls, the new path doesn't open an area back into one of
+    the explored cells.
+
+(b) How does your algorithm use random numbers to generate a different maze
+    each time?  Specifically, what decision should be made by random numbers
+    at each recursive invocation of the depth-first search method?
+
+    First, we generate two random numbers that we will use to
+    determine our initial start cell. Then, use the random number
+    generator, using i=4 (0 represents North, 1 represents East...) we
+    get a number that says where we will go next (legal moves
+    only). If the next cell is in our list of explored cells, we don't
+    break that wall, but instead, backtrack and choose the next cell
+    available to us. Otherwise, we break the wall connecting the
+    cells, and keep doing this until we have no more actions. When we 
+    finish, we have a maze.

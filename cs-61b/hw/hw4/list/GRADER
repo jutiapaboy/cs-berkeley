@@ -1,0 +1,17 @@
+cs61b-fg, Annie To
+
+In our implementation of remove, when we remove an node, we change 
+the pointers of our list, but not the pointers of the removed node.
+
+So consider a list, List, and we want to remove Node2 from it. After the 
+remove method, L doesn't contain Node2, but Node2 still points to the nodes in L.
+
+If take Node2, and insert Node3 after it (which passes our error checks 
+because  Node2 is not null), then Node3 gets appended to Node2, and 
+the size of our list increases.
+
+HOWEVER, we do not want the size of our list to be increased, because our List
+can no longer access that node.
+
+This violates invariant #6, which states that the size of our list is the number of
+nodes that can be accessed from the sentinel.

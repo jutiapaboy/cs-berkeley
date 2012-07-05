@@ -1,0 +1,45 @@
+GRADER file for Homework 8
+
+Your Name:   Annie To
+Your Login:  cs61b-fg
+
+Part III.  Running time comparisons
+
+  List size         mergesort             quicksort
+  10             	0-1     msec		  0       msec
+  100 				1-2     msec	      1-2     msec
+  1,000	            17-24   msec          7-9     msec
+  10,000            55-75   msec          36-52   msec
+  100,000(?)        391-409 msec          233-265 msec
+
+Part IV.
+
+  Is mergesort stable?  
+  Why or why not? 
+  
+  NO
+  
+  Since in mergeSort we chunk off two items at once, if we
+  have two identical keys in the original, after all the 
+  mergeSort rotations, our first duplicate key gets pushed 
+  back, and our second duplicate key becomes the first queue
+  in mergeSortedQueues. So the two duplicate keys are
+  reversed after mergeSort.
+  
+  For example, if we have [ 8 2 9 1(a) 6 1(b) 4 4 6 9 ], then 
+  after mergeSortedQueues, we have [ [ 1(b) 4 4 6 ] [ 1(a) 2 6 8 9 9 ] ],
+  where [ 1(b) 4 4 6 ] is q1 and [ 1(a) 2 6 8 9 9 ] q2 in mergeSortedQueues.
+  
+  The result after mergeSortedQueues is [ 1(b) 1(a) ...] because 
+  in our implementation of mergeSortedQueues, if we have two equal
+  keys, q1 gets dequeued first.
+ 
+
+  Is quicksort stable?  
+  Why or why not?
+  
+  YES
+  
+  Stability is determined in the partition method, where if 
+  we have equal keys, then we simply dequeue and enqueue them 
+  in the same order. 

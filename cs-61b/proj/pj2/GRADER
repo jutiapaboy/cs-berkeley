@@ -1,0 +1,177 @@
+                                     GRADER
+
+Name of student running submit: Amanda Wong
+Login of student running submit: cs61b-ff
+
+Second team member's name: Annie To
+Second team member's login: cs61b-fg
+
+Third team member's name (if any): Amy Kuo
+Third team member's login: cs61b-hg
+
+IMPORTANT:  Once you've submitted Project 2 once, the same team member should
+submit always.  If a different teammate must submit, inform cs61b@cory.eecs of
+all the details.  Include a complete list of team members, and let us know
+which submission you want graded.
+
+If you've submitted your project once, or even written a substantial amount of
+code together, you may not change partners without the permission of the
+instructor.
+===============================================================================
+Does your program compile without errors?
+
+
+Have you tested your program on the machines in the Soda CS 61B lab?
+
+
+Did you successfully implement game tree search?  Did you successfully
+implement alpha-beta pruning?  Are there any limitations on it?  What is the
+default number of search levels set by the one-parameter MachinePlayer
+constructor?
+
+
+Describe your board evaluation function in some detail.
+
+
+Does your MachinePlayer use any special method of choosing the first few moves?
+
+
+Is there anything else the graders should know to help them read your project?
+
+
+
+Describe the classes, modules, and interfaces you designed before and while you
+implemented the project.  Your description should include:
+  -  A list of the classes your program uses.
+  -  A list of each of the "modules" used in or by MachinePlayer, similar to
+     the list in the "Teamwork" section of the README (but hopefully more
+     detailed).
+  -  For each module, list the class(es) the module is implemented in.
+  -  For each module, say which of your team members implemented it.
+  -  For each module, describe its interface--specifically, the prototype and
+     behavior of each method that is available for external callers (outside
+     the module) to call.  Don't include methods that are only meant to be
+     called from within the module.
+
+     For each method, provide (1) a method prototype and (2) a complete,
+     unambiguous description of the behavior of the method/module.  This
+     description should also appear before the method in your code's comments.
+
+You will probably need to change some of your design decisions as you go; be
+sure to modify this file to reflect these changes before you submit your
+project.  Your design of classes and interfaces with be worth about 10% of your
+grade.
+
+CLASSES:
+Pairs: -represents coordinates of a piece
+       -int fields x and y are private to prevent corruption
+       -public int xCoord();
+       	       returns the x-coordinate of a piece
+       -public int yCoord();
+       	       returns the y-coordinate of a piece
+       -for use in findConnectingPieces(Pair chip);
+       	       this returns an SList of Pairs
+
+Board: -represents game state as a two-dimensional array
+       -each element of the array is either EMPTY, BLACK, or WHITE.
+       -creates a board object that is a class variable shared among
+       all players, updates as moves are chosen
+       -public boolean isValidMove(Move move);
+       	       returns true if move is legal
+	       returns false if move is illegal
+       -public SList getValidMoves(Player player);
+       	       generates a singly-linked list of all valid moves for a
+	       	       player
+       -public SList findConnectingPieces(Pair chip);
+	       generates a singly-linked list of chips that connect
+	       	       with the given chip at chip[0], chip[1]
+       -public boolean containsNetworks(Player player);
+       	       returns true if Player has at least one network
+	       returns false if not
+       -public array[][] currentBoard();
+       	       returns current game board
+       -public array[][] newBoard(Move move);
+       	       updates a COPY of the current game board
+	       	       (so we don't have to make an 'undo' method)
+	       adds/steps a chip specified by move
+	       used to create children boards
+       -public float evalfn(Player player);
+       	       evaluates the board for the given Player
+	       returns a float number--higher is better
+       	       
+Move: given
+
+Player: given
+
+MachinePlayer:
+	-public Move minimax(Board board, int depth);
+		chooses optimal Move for given board, depth
+	-public Move chooseMove();
+		uses minimax to choose optimal move
+		uses Player's constructor-defined depth
+		uses Player's access to current game board
+	-public boolean forceMove(Move move);
+		works as specified in readme
+	-public boolean opponentMove(Move move);
+		works as specified in readme
+	-public MachinePlayer(int color);
+		works as specified in readme
+		uses standard depth = 1 (subject to change)
+	-public MachinePlayer(int color, int searchDepth);
+		works as specified in readme
+
+
+MODULES IMPLEMENTED:
+
+  1)  determining whether a move is valid
+      Amy Kuo (cs61b-hg)
+
+      public boolean isValidMove(Move move) -- Board class
+      	takes in a Move object
+	returns boolean true or false
+	true = move is legal
+	false = move is illegal
+	helper method for opponentMove and forceMove and chooseMove
+
+  2)  generating a list of all valid moves
+      Amy Kuo (cs61b-hg)
+
+      public SList getValidMoves(Player player) -- Board class
+      	takes in a Player object
+	returns SList of Move objects
+	only contains legal moves
+
+  3)  finding the chips (of the same color) that form connections with
+        a chip
+      Amanda Wong (cs61b-ff)
+
+      public SList findConnectingPieces(Pair chip) -- Board class
+	takes coordinates of a chip and finds connecting pieces of the
+	      		       	    	      	same color
+	returns SList of coordinates of these pieces, also represented
+		      	 	     		as Pair items
+
+  4)  determining whether a game board contains any networks for a given
+      	player
+      Annie To (cs61b-fg)
+
+      public boolean containsNetworks(Player player) -- Board class
+      	takes Player object and searches board for networks belonging
+	      	     	    		       	to Player
+	returns boolean true or false
+
+  5)  computing an evaluation function for a board
+      Annie To (cs61b-fg)
+
+      public float evalfn(Player player) -- Board class
+      	evaluates the utility of the current board for the given
+      		      	      	     	     	Player
+	returns an float
+	the higher the float, the closer the Player is to winning
+
+  6)  performing minimax tree search.
+      Amanda Wong (cs61b-ff)
+
+      public Move minimax(Board board, int depth) -- MachinePlayer class
+      	uses evalfn to evaluate boards at deepest levels of search
+	returns optimal Move after applying minimax algorithm
